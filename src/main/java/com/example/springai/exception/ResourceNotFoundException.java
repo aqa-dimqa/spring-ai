@@ -10,7 +10,7 @@ public class ResourceNotFoundException extends RuntimeException {
     private final String query;
 
     public ResourceNotFoundException(ResourceType resourceType, String query) {
-        super("Resource not found. Resource type = [%s], query = [%s]".formatted(resourceType, query));
+        super("Resource not found. Resource type = [%s], query: %s".formatted(resourceType, query));
         this.resourceType = resourceType;
         this.query = query;
     }

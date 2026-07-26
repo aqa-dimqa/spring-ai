@@ -28,6 +28,9 @@ dependencies {
     implementation 'org.flywaydb:flyway-database-postgresql'
     implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.ai:spring-ai-starter-vector-store-pgvector'
+    implementation "org.springframework.ai:spring-ai-advisors-vector-store:${vectorStoreVersion}"
+//    implementation 'org.springframework.ai:spring-ai-advisors-vector-store'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'

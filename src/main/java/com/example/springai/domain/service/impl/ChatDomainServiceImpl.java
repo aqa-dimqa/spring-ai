@@ -26,21 +26,23 @@ public class ChatDomainServiceImpl implements ChatDomainService {
 
     @Nonnull
     @Override
-    public ChatEntity getChatById(@Nonnull final UUID chatId) {
+    public ChatEntity getUserChat(@Nonnull final UUID chatId) {
         return chatRepository.findById(chatId)
+                .orElseThrow(() -> new ResourceNotFoundException(ResourceType.CHAT, chatId.toString()));
+    }
+
+
+    @Nonnull
+    @Override
+    public ChatEntity getUserChat(@Nonnull final UUID userId, @Nonnull final UUID chatId) {
+        return chatRepository.findByUserIdAndId(userId, chatId)
                 .orElseThrow(() -> new ResourceNotFoundException(ResourceType.CHAT, chatId.toString()));
     }
 
     @Nonnull
     @Override
-    public List<ChatEntity> getAllUserActiveChats(@Nonnull final UUID userId) {
-        return chatRepository.findAllActiveChatsByUserId(userId);
-    }
-
-    @Nonnull
-    @Override
-    public List<ChatEntity> getAllUserArchivedChats(@Nonnull final UUID userId) {
-        return chatRepository.findAllArchivedChatsByUserId(userId);
+    public List<ChatEntity> getAllUserChats(@Nonnull final UUID userId, final boolean isActive) {
+        return chatRepository.findAllUserChatsByUserIdAndActiveStatus(userId, isActive);
     }
 
     @Override
