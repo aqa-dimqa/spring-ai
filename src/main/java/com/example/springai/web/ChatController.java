@@ -5,6 +5,7 @@ import com.example.springai.middleware.model.request.ChatRequest;
 import com.example.springai.middleware.model.response.ChatResponse;
 import com.example.springai.middleware.model.response.ChatShortResponse;
 import com.example.springai.middleware.service.ChatEdgeService;
+import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;

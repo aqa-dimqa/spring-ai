@@ -31,9 +31,10 @@ public class ChatDomainServiceImpl implements ChatDomainService {
                 .orElseThrow(() -> new ResourceNotFoundException(ResourceType.CHAT, chatId.toString()));
     }
 
+
     @Nonnull
     @Override
-    public ChatEntity getUserChat(@Nonnull UUID userId, @Nonnull UUID chatId) {
+    public ChatEntity getUserChat(@Nonnull final UUID userId, @Nonnull final UUID chatId) {
         return chatRepository.findByUserIdAndId(userId, chatId)
                 .orElseThrow(() -> new ResourceNotFoundException(ResourceType.CHAT, chatId.toString()));
     }

@@ -3,7 +3,9 @@ package com.example.springai.middleware.service;
 import com.example.springai.middleware.model.request.ChatRequest;
 import com.example.springai.middleware.model.response.ChatResponse;
 import com.example.springai.middleware.model.response.ChatShortResponse;
+import com.example.springai.middleware.model.response.DocumentShortResponse;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;

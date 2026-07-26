@@ -33,7 +33,6 @@ public class ChatFacade implements ChatEdgeService {
     @Nonnull
     @Override
     public UUID createNewChat(@Nonnull final ChatRequest chatRequest) {
-
         ChatEntity newChat = chatDomainService.save(chatMapper.toEntity(chatRequest));
         return newChat.getId();
 

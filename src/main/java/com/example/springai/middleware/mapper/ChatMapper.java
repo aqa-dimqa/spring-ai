@@ -5,6 +5,7 @@ import com.example.springai.middleware.model.request.ChatRequest;
 import com.example.springai.middleware.model.response.ChatResponse;
 import com.example.springai.middleware.model.response.ChatShortResponse;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
