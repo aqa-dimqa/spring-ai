@@ -11,7 +11,7 @@ import java.util.List;
 public class MessageSourceConfig {
 
     @Bean
-    public MessageSource messageSource(){
+    public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages");
         messageSource.setPropertiesPersister(new YamlPropertiesLoader());

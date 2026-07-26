@@ -12,13 +12,13 @@ public interface ChatDomainService {
     ChatEntity save(@Nonnull final ChatEntity chatEntity);
 
     @Nonnull
-    ChatEntity getChatById(@Nonnull final UUID chatId);
+    ChatEntity getUserChat(@Nonnull final UUID chatId);
 
     @Nonnull
-    List<ChatEntity> getAllUserActiveChats(@Nonnull final UUID userId);
+    ChatEntity getUserChat(@Nonnull final UUID userId, @Nonnull final UUID chatId);
 
     @Nonnull
-    List<ChatEntity> getAllUserArchivedChats(@Nonnull final UUID userId);
+    List<ChatEntity> getAllUserChats(@Nonnull final UUID userId, final boolean isActive);
 
     void deleteChat(@Nonnull final UUID chatId);
 

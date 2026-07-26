@@ -31,7 +31,7 @@ public class PostgresChatMemory implements ChatMemory {
     @Transactional
     public void add(@Nonnull final String conversationId, @Nonnull final List<Message> messages) {
         UUID chatId = UUID.fromString(conversationId);
-        ChatEntity chat = chatDomainService.getChatById(chatId);
+        ChatEntity chat = chatDomainService.getUserChat(chatId);
         AtomicLong lastMessageNumber = new AtomicLong(
                 chatMessageDomainService.getLastMessageNumberOfChat(chatId)
                         .orElse(0L)
@@ -47,7 +47,7 @@ public class PostgresChatMemory implements ChatMemory {
     public List<Message> get(@Nonnull final String conversationId) {
 
         UUID chatId = UUID.fromString(conversationId);
-        ChatEntity chat = chatDomainService.getChatById(chatId);
+        ChatEntity chat = chatDomainService.getUserChat(chatId);
 
         return chatMessageDomainService.getAllByChatId(chatId).stream()
                 .sorted(Comparator.comparing(ChatMessageEntity::getNumber).reversed())

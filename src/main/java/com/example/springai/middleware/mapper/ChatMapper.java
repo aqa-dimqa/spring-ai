@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -52,11 +51,11 @@ public class ChatMapper {
     }
 
     @Nonnull
-    public ChatEntity toEntity(@Nonnull final ChatRequest chatRequest, @Nonnull final UUID userId) {
+    public ChatEntity toEntity(@Nonnull final ChatRequest chatRequest) {
         return ChatEntity.builder()
                 .isActive(true)
                 .title(chatRequest.title())
-                .userId(userId)
                 .build();
     }
+
 }

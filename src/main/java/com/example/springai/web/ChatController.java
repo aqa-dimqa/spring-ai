@@ -37,7 +37,7 @@ public class ChatController {
 
     @GetMapping({"/", "/chat", "/chat/"})
     public String mainPage(ModelMap modelMap) {
-        modelMap.addAttribute("chats", chatEdgeService.getAllUserActiveChats(defaultUserId));
+        modelMap.addAttribute("chats", chatEdgeService.getAllUserChats(defaultUserId, true));
         return "chat";
     }
 
@@ -45,9 +45,10 @@ public class ChatController {
     public String newChat(@Valid @NotBlank @RequestParam("title") String title) {
         UUID userId = defaultUserId;
         ChatRequest request = ChatRequest.builder()
+                .userId(userId)
                 .title(title)
                 .build();
-        UUID newChatId = chatEdgeService.createNewChat(userId, request);
+        UUID newChatId = chatEdgeService.createNewChat(request);
         return "redirect:/chat/" + newChatId;
     }
 
@@ -55,8 +56,8 @@ public class ChatController {
     public String showChat(@Valid @NotBlank @PathVariable("chat_id") final String chatIdText, ModelMap modelMap) {
 
         UUID chatId = UUID.fromString(chatIdText);
-        List<ChatShortResponse> chats = chatEdgeService.getAllUserActiveChats(defaultUserId);
-        ChatResponse chat = chatEdgeService.getChat(chatId);
+        List<ChatShortResponse> chats = chatEdgeService.getAllUserChats(userContext.getUserId(), true);
+        ChatResponse chat = chatEdgeService.getChat(userContext.getUserId(), chatId);
 
         modelMap.addAttribute("chats", chats);
         modelMap.addAttribute("chat", chat);
@@ -68,21 +69,21 @@ public class ChatController {
     @PostMapping("/chat/{chat_id}/archive")
     public String archiveChat(@Valid @NotBlank @PathVariable("chat_id") String chatIdText) {
         UUID chatId = UUID.fromString(chatIdText);
-        chatEdgeService.archiveChat(chatId);
+        chatEdgeService.archiveChat(userContext.getUserId(), chatId);
         return "redirect:/chat/";
     }
 
     @PostMapping("/chat/{chat_id}/unarchive")
     public String unarchiveChat(@Valid @NotBlank @PathVariable("chat_id") String chatIdText) {
         UUID chatId = UUID.fromString(chatIdText);
-        chatEdgeService.unarchiveChat(chatId);
+        chatEdgeService.unarchiveChat(userContext.getUserId(), chatId);
         return "redirect:/chat/";
     }
 
     @PostMapping("/chat/{chat_id}/delete")
     public String deleteChat(@Valid @NotBlank @PathVariable("chat_id") String chatIdText) {
         UUID chatId = UUID.fromString(chatIdText);
-        chatEdgeService.deleteChat(chatId);
+        chatEdgeService.deleteChat(userContext.getUserId(), chatId);
         return "redirect:/chat/";
     }
 

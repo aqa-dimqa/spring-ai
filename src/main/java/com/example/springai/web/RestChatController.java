@@ -1,5 +1,6 @@
 package com.example.springai.web;
 
+import com.example.springai.context.UserContext;
 import com.example.springai.middleware.model.request.ChatMessageRequest;
 import com.example.springai.middleware.model.response.ChatResponse;
 import com.example.springai.middleware.model.response.ChatShortResponse;
@@ -26,8 +27,19 @@ public class RestChatController {
 
     private final ChatEdgeService chatEdgeService;
 
+    private final UserContext userContext;
+
     @Value("${app.user.default.id}")
     private UUID defaultUserId;
+
+    @Value("${app.user.default.username}")
+    private String defaultUsername;
+
+    @ModelAttribute
+    public void setUserContext() {
+        userContext.setUserId(defaultUserId);
+        userContext.setUsername(defaultUsername);
+    }
 
     @GetMapping(value = {"/{chat_id}", "/{chat_id}/"})
     public ResponseEntity<ChatResponse> getChat(@Valid @NotBlank @PathVariable("chat_id") final String chatIdText) {
@@ -40,7 +52,7 @@ public class RestChatController {
 
     @GetMapping(value = {"/archive", "/archive/"})
     public ResponseEntity<List<ChatShortResponse>> getArchivedChats() {
-        List<ChatShortResponse> archivedChats = chatEdgeService.getAllUserArchivedChats(defaultUserId);
+        List<ChatShortResponse> archivedChats = chatEdgeService.getAllUserChats(defaultUserId, false);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(archivedChats);
@@ -51,7 +63,7 @@ public class RestChatController {
                                 @Valid @NotBlank @RequestParam("title") final String title
     ) {
         UUID chatId = UUID.fromString(chatIdText);
-        chatEdgeService.updateChatTitle(chatId, title);
+        chatEdgeService.updateChatTitle(userContext.getUserId(), chatId, title);
     }
 
     @PostMapping(value = {"/{chat_id}/message_stream", "/{chat_id}/message_stream/"}, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -59,7 +71,8 @@ public class RestChatController {
                                      @Valid @RequestBody @NotNull final ChatMessageRequest request
     ) {
         UUID chatId = UUID.fromString(chatIdText);
-        return chatEdgeService.processMessageWithStreaming(chatId, request.content());
+        return chatEdgeService.processMessageWithStreaming(userContext.getUserId(), chatId, request.content());
     }
+
 
 }

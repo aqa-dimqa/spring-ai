@@ -12,28 +12,29 @@ import java.util.UUID;
 public interface ChatEdgeService {
 
     @Nonnull
-    UUID createNewChat(@Nonnull final UUID userId,
-                       @Nonnull final ChatRequest request);
+    UUID createNewChat(@Nonnull final ChatRequest request);
 
     @Nonnull
     ChatResponse getChat(@Nonnull final UUID chatId);
 
     @Nonnull
-    List<ChatShortResponse> getAllUserActiveChats(@Nonnull final UUID userId);
+    ChatResponse getChat(@Nonnull final UUID userId, @Nonnull final UUID chatId);
 
     @Nonnull
-    List<ChatShortResponse> getAllUserArchivedChats(@Nonnull final UUID userId);
+    List<ChatShortResponse> getAllUserChats(@Nonnull final UUID userId, final boolean isActive);
 
-    void updateChatTitle(@Nonnull final UUID chatId,
+    void updateChatTitle(@Nonnull final UUID userId,
+                         @Nonnull final UUID chatId,
                          @Nonnull final String title);
 
-    void archiveChat(@Nonnull final UUID chatId);
+    void archiveChat(@Nonnull final UUID userId, @Nonnull final UUID chatId);
 
-    void unarchiveChat(@Nonnull final UUID chatId);
+    void unarchiveChat(@Nonnull final UUID userId, @Nonnull final UUID chatId);
 
-    void deleteChat(@Nonnull final UUID chatId);
+    void deleteChat(@Nonnull final UUID userId, @Nonnull final UUID chatId);
 
     @Nonnull
-    SseEmitter processMessageWithStreaming(@Nonnull final UUID chatId,
+    SseEmitter processMessageWithStreaming(@Nonnull final UUID userId,
+                                           @Nonnull final UUID chatId,
                                            @Nonnull final String prompt);
 }

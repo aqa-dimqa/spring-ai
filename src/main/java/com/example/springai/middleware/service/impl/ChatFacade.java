@@ -32,61 +32,68 @@ public class ChatFacade implements ChatEdgeService {
 
     @Nonnull
     @Override
-    public UUID createNewChat(@Nonnull final UUID userId, @Nonnull final ChatRequest chatRequest) {
-        ChatEntity newChat = chatDomainService.save(chatMapper.toEntity(chatRequest, userId));
+    public UUID createNewChat(@Nonnull final ChatRequest chatRequest) {
+
+        ChatEntity newChat = chatDomainService.save(chatMapper.toEntity(chatRequest));
         return newChat.getId();
+
     }
 
     @Nonnull
     @Override
     public ChatResponse getChat(@Nonnull final UUID chatId) {
-        ChatEntity chat = chatDomainService.getChatById(chatId);
+        ChatEntity chat = chatDomainService.getUserChat(chatId);
         return chatMapper.toResponse(chat);
     }
 
     @Nonnull
     @Override
-    public List<ChatShortResponse> getAllUserActiveChats(@Nonnull final UUID userId) {
-        List<ChatEntity> chats = chatDomainService.getAllUserActiveChats(userId);
-        return chatMapper.toShortResponse(chats);
+    public ChatResponse getChat(@Nonnull final UUID userId, @Nonnull final UUID chatId) {
+        ChatEntity chat = chatDomainService.getUserChat(userId, chatId);
+        return chatMapper.toResponse(chat);
     }
 
     @Nonnull
     @Override
-    public List<ChatShortResponse> getAllUserArchivedChats(@Nonnull final UUID userId) {
-        List<ChatEntity> chats = chatDomainService.getAllUserArchivedChats(userId);
+    public List<ChatShortResponse> getAllUserChats(@Nonnull final UUID userId, final boolean isActive) {
+        List<ChatEntity> chats = chatDomainService.getAllUserChats(userId, isActive);
         return chatMapper.toShortResponse(chats);
     }
 
     @Override
-    public void updateChatTitle(@Nonnull final UUID chatId, @Nonnull final String title) {
-        ChatEntity chat = chatDomainService.getChatById(chatId);
+    public void updateChatTitle(@Nonnull final UUID userId, @Nonnull final UUID chatId, @Nonnull final String title) {
+        ChatEntity chat = chatDomainService.getUserChat(userId, chatId);
         chatDomainService.save(chat.setTitle(title));
     }
 
     @Override
-    public void archiveChat(@Nonnull final UUID chatId) {
-        ChatEntity chat = chatDomainService.getChatById(chatId);
+    public void archiveChat(@Nonnull final UUID userId, @Nonnull final UUID chatId) {
+        ChatEntity chat = chatDomainService.getUserChat(userId, chatId);
         chatDomainService.save(chat.setIsActive(false));
     }
 
     @Override
-    public void unarchiveChat(@Nonnull final UUID chatId) {
-        ChatEntity chat = chatDomainService.getChatById(chatId);
+    public void unarchiveChat(@Nonnull final UUID userId, @Nonnull final UUID chatId) {
+        ChatEntity chat = chatDomainService.getUserChat(userId, chatId);
         chatDomainService.save(chat.setIsActive(true));
     }
 
     @Override
-    public void deleteChat(@Nonnull final UUID chatId) {
+    public void deleteChat(@Nonnull final UUID userId, @Nonnull final UUID chatId) {
         chatDomainService.deleteChat(chatId);
     }
 
     @Nonnull
     @Override
-    public SseEmitter processMessageWithStreaming(@Nonnull UUID chatId, @Nonnull String prompt) {
+    public SseEmitter processMessageWithStreaming(@Nonnull final UUID userId,
+                                                  @Nonnull final UUID chatId,
+                                                  @Nonnull final String prompt
+    ) {
 
         StringBuilder answer = new StringBuilder();
         SseEmitter sseEmitter = new SseEmitter(0L);
+        chatDomainService.getUserChat(userId, chatId); // Check chat exist by userId and id
+
         chatClient.prompt(prompt)
                 .advisors(advisorSpec ->
                         advisorSpec.param(ChatMemory.CONVERSATION_ID, chatId)
