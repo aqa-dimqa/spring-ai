@@ -32,10 +32,7 @@ public class ChatFacade implements ChatEdgeService {
 
     @Nonnull
     @Override
-    public UUID createNewChat(@Nonnull final UUID userId, @Nonnull final ChatRequest chatRequest) {
-        ChatEntity newChat = chatDomainService.save(chatMapper.toEntity(chatRequest, userId));
     public UUID createNewChat(@Nonnull final ChatRequest chatRequest) {
-
         ChatEntity newChat = chatDomainService.save(chatMapper.toEntity(chatRequest));
         return newChat.getId();
 
@@ -87,7 +84,10 @@ public class ChatFacade implements ChatEdgeService {
 
     @Nonnull
     @Override
-    public SseEmitter processMessageWithStreaming(@Nonnull UUID chatId, @Nonnull String prompt) {
+    public SseEmitter processMessageWithStreaming(@Nonnull final UUID userId,
+                                                  @Nonnull final UUID chatId,
+                                                  @Nonnull final String prompt
+    ) {
 
         StringBuilder answer = new StringBuilder();
         SseEmitter sseEmitter = new SseEmitter(0L);

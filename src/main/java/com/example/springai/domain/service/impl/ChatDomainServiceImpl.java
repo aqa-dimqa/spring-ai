@@ -42,7 +42,7 @@ public class ChatDomainServiceImpl implements ChatDomainService {
     @Nonnull
     @Override
     public List<ChatEntity> getAllUserChats(@Nonnull final UUID userId, final boolean isActive) {
-        return chatRepository.findAllUserChatsByUserIdAndActiveStatus(userId, isActive);
+        return chatRepository.findAllChatsByUserIdAndIsActiveOrderByUpdatedAtDesc(userId, isActive);
     }
 
     @Override

@@ -46,9 +46,10 @@ public class ChatController {
     public String newChat(@Valid @NotBlank @RequestParam("title") String title) {
         UUID userId = defaultUserId;
         ChatRequest request = ChatRequest.builder()
+                .userId(userId)
                 .title(title)
                 .build();
-        UUID newChatId = chatEdgeService.createNewChat(userId, request);
+        UUID newChatId = chatEdgeService.createNewChat(request);
         return "redirect:/chat/" + newChatId;
     }
 

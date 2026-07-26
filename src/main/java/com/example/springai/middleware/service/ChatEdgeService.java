@@ -36,6 +36,7 @@ public interface ChatEdgeService {
     void deleteChat(@Nonnull final UUID userId, @Nonnull final UUID chatId);
 
     @Nonnull
-    SseEmitter processMessageWithStreaming(@Nonnull final UUID chatId,
+    SseEmitter processMessageWithStreaming(@Nonnull final UUID userId,
+                                           @Nonnull final UUID chatId,
                                            @Nonnull final String prompt);
 }
