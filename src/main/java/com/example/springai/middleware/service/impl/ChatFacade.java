@@ -1,11 +1,15 @@
 package com.example.springai.middleware.service.impl;
 
 import com.example.springai.domain.model.ChatEntity;
+import com.example.springai.domain.model.SpaceEntity;
 import com.example.springai.domain.service.ChatDomainService;
+import com.example.springai.domain.service.SpaceDomainService;
 import com.example.springai.middleware.mapper.ChatMapper;
+import com.example.springai.middleware.mapper.DocumentMapper;
 import com.example.springai.middleware.model.request.ChatRequest;
 import com.example.springai.middleware.model.response.ChatResponse;
 import com.example.springai.middleware.model.response.ChatShortResponse;
+import com.example.springai.middleware.model.response.DocumentShortResponse;
 import com.example.springai.middleware.service.ChatEdgeService;
 import jakarta.annotation.Nonnull;
 import jakarta.transaction.Transactional;
@@ -27,13 +31,20 @@ import java.util.UUID;
 public class ChatFacade implements ChatEdgeService {
 
     private final ChatDomainService chatDomainService;
+    private final SpaceDomainService spaceDomainService;
     private final ChatMapper chatMapper;
+    private final DocumentMapper documentMapper;
     private final ChatClient chatClient;
 
     @Nonnull
     @Override
     public UUID createNewChat(@Nonnull final ChatRequest chatRequest) {
-        ChatEntity newChat = chatDomainService.save(chatMapper.toEntity(chatRequest));
+
+        SpaceEntity space = null;
+        if (chatRequest.spaceId() != null)
+            space = spaceDomainService.getSpaceById(chatRequest.spaceId());
+
+        ChatEntity newChat = chatDomainService.save(chatMapper.toEntity(chatRequest, space));
         return newChat.getId();
 
     }
@@ -84,10 +95,14 @@ public class ChatFacade implements ChatEdgeService {
 
     @Nonnull
     @Override
-    public SseEmitter processMessageWithStreaming(@Nonnull final UUID userId,
-                                                  @Nonnull final UUID chatId,
-                                                  @Nonnull final String prompt
-    ) {
+    public List<DocumentShortResponse> getChatDocuments(@Nonnull UUID userId, @Nonnull UUID chatId) {
+        ChatEntity chat = chatDomainService.getUserChat(userId, chatId);
+        return documentMapper.toShortResponse(chat.getDocuments());
+    }
+
+    @Nonnull
+    @Override
+    public SseEmitter processMessageWithStreaming(@Nonnull final UUID userId, @Nonnull UUID chatId, @Nonnull String prompt) {
 
         StringBuilder answer = new StringBuilder();
         SseEmitter sseEmitter = new SseEmitter(0L);

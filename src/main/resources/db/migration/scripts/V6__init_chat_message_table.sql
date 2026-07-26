@@ -1,8 +1,8 @@
 create table if not exists app.chat_messages
 (
-    id         UUID         not null unique,
-    user_id    UUID         not null,
-    chat_id    UUID         not null,
+    id         uuid         not null unique,
+    user_id    uuid         not null,
+    chat_id    uuid         not null,
     role       varchar(50)  not null,
     number     serial       not null,
     content    text,

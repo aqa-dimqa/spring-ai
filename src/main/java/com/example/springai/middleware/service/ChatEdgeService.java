@@ -5,7 +5,6 @@ import com.example.springai.middleware.model.response.ChatResponse;
 import com.example.springai.middleware.model.response.ChatShortResponse;
 import com.example.springai.middleware.model.response.DocumentShortResponse;
 import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
@@ -34,6 +33,9 @@ public interface ChatEdgeService {
     void unarchiveChat(@Nonnull final UUID userId, @Nonnull final UUID chatId);
 
     void deleteChat(@Nonnull final UUID userId, @Nonnull final UUID chatId);
+
+    @Nonnull
+    List<DocumentShortResponse> getChatDocuments(@Nonnull UUID userId, @Nonnull UUID chatId);
 
     @Nonnull
     SseEmitter processMessageWithStreaming(@Nonnull final UUID userId,

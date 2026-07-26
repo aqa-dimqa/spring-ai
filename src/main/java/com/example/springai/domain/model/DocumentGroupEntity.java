@@ -18,34 +18,22 @@ import java.util.*;
 @Entity
 @Table(
         schema = Constants.Db.APP_SCHEMA,
-        name = Constants.Db.CHAT_TABLE
+        name = Constants.Db.DOCUMENT_GROUP_TABLE
 )
-public class ChatEntity extends BaseEntity<ChatEntity> {
+public class DocumentGroupEntity extends BaseEntity<DocumentGroupEntity> {
 
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "space_id", referencedColumnName = "id")
-    private SpaceEntity space;
-
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "is_active", nullable = false)
-    private Boolean isActive;
-
-    @Column(name = "max_messages", nullable = false)
-    private int maxMessages;
-
-    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ChatMessageEntity> messages;
-
+    @Builder.Default
     @ManyToMany
     @JoinTable(
-            name = Constants.Db.CHAT_DOCUMENT_TABLE,
             schema = Constants.Db.APP_SCHEMA,
-            joinColumns = @JoinColumn(name = "chat_id"),
+            name =  Constants.Db.DOCUMENT_DOCUMENT_GROUP_TABLE,
+            joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "document_id")
     )
     private List<DocumentEntity> documents = new ArrayList<>();

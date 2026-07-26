@@ -1,6 +1,7 @@
 package com.example.springai.middleware.mapper;
 
 import com.example.springai.domain.model.ChatEntity;
+import com.example.springai.domain.model.SpaceEntity;
 import com.example.springai.middleware.model.request.ChatRequest;
 import com.example.springai.middleware.model.response.ChatResponse;
 import com.example.springai.middleware.model.response.ChatShortResponse;
@@ -52,9 +53,11 @@ public class ChatMapper {
     }
 
     @Nonnull
-    public ChatEntity toEntity(@Nonnull final ChatRequest chatRequest) {
+    public ChatEntity toEntity(@Nonnull final ChatRequest chatRequest, @Nullable SpaceEntity space) {
         return ChatEntity.builder()
                 .isActive(true)
+                .userId(chatRequest.userId())
+                .space(space)
                 .title(chatRequest.title())
                 .build();
     }
