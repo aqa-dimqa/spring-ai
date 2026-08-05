@@ -20,11 +20,14 @@ spring:
         schema-name: ${APP_SCHEMA}
         table-name: vector_store
         id-type: uuid
+        index-type: HNSW
 
   datasource:
     url: ${PG_URL}
     username: ${PG_USER}
     password: ${PG_PASSWORD}
+    hikari:
+      connection-init-sql: "set search_path to app;"
 
   jpa:
     open-in-view: false
