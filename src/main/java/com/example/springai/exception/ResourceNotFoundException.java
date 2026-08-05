@@ -1,18 +1,24 @@
 package com.example.springai.exception;
 
 import com.example.springai.domain.enums.ResourceType;
+import jakarta.annotation.Nonnull;
 import lombok.Getter;
 
-@Getter
-public class ResourceNotFoundException extends RuntimeException {
+import java.util.Map;
 
-    private final ResourceType resourceType;
-    private final String query;
+@Getter
+public class ResourceNotFoundException extends ResourceConditionException {
+
+    private static final String BASE_MESSAGE = "Resource not found";
 
     public ResourceNotFoundException(ResourceType resourceType, String query) {
-        super("Resource not found. Resource type = [%s], query: %s".formatted(resourceType, query));
-        this.resourceType = resourceType;
-        this.query = query;
+        super(BASE_MESSAGE, resourceType, query);
+    }
+
+    public ResourceNotFoundException(@Nonnull final ResourceType resourceType,
+                                     @Nonnull final Map<String, Object> queries
+    ) {
+        super(BASE_MESSAGE, resourceType, queries);
     }
 
 }

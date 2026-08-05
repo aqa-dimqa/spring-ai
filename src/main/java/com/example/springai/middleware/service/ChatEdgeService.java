@@ -1,6 +1,6 @@
 package com.example.springai.middleware.service;
 
-import com.example.springai.middleware.model.request.ChatRequest;
+import com.example.springai.middleware.model.request.CreateChatRequest;
 import com.example.springai.middleware.model.response.ChatResponse;
 import com.example.springai.middleware.model.response.ChatShortResponse;
 import jakarta.annotation.Nonnull;
@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface ChatEdgeService {
 
     @Nonnull
-    UUID createNewChat(@Nonnull final ChatRequest request);
+    UUID createNewChat(@Nonnull final CreateChatRequest request);
 
     @Nonnull
     ChatResponse getChat(@Nonnull final UUID chatId);
@@ -22,6 +22,9 @@ public interface ChatEdgeService {
 
     @Nonnull
     List<ChatShortResponse> getAllUserChats(@Nonnull final UUID userId, final boolean isActive);
+
+    @Nonnull
+    List<ChatShortResponse> getAllUserNonSpaceChats(@Nonnull final UUID userId, final boolean isActive);
 
     void updateChatTitle(@Nonnull final UUID userId,
                          @Nonnull final UUID chatId,

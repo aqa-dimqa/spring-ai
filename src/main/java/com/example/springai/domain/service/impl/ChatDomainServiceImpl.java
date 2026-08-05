@@ -31,7 +31,6 @@ public class ChatDomainServiceImpl implements ChatDomainService {
                 .orElseThrow(() -> new ResourceNotFoundException(ResourceType.CHAT, chatId.toString()));
     }
 
-
     @Nonnull
     @Override
     public ChatEntity getUserChat(@Nonnull final UUID userId, @Nonnull final UUID chatId) {
@@ -43,6 +42,12 @@ public class ChatDomainServiceImpl implements ChatDomainService {
     @Override
     public List<ChatEntity> getAllUserChats(@Nonnull final UUID userId, final boolean isActive) {
         return chatRepository.findAllChatsByUserIdAndIsActiveOrderByUpdatedAtDesc(userId, isActive);
+    }
+
+    @Nonnull
+    @Override
+    public List<ChatEntity> getAllUserNonSpaceChats(@Nonnull final UUID userId, final boolean isActive) {
+        return chatRepository.findAllChatsByUserIdAndSpaceIsNullAndIsActiveOrderByUpdatedAtDesc(userId, isActive);
     }
 
     @Override

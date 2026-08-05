@@ -20,6 +20,9 @@ public interface ChatDomainService {
     @Nonnull
     List<ChatEntity> getAllUserChats(@Nonnull final UUID userId, final boolean isActive);
 
+    @Nonnull
+    List<ChatEntity> getAllUserNonSpaceChats(@Nonnull final UUID userId, final boolean isActive);
+
     void deleteChat(@Nonnull final UUID chatId);
 
 }

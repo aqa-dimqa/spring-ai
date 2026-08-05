@@ -10,6 +10,46 @@
     </th:block>
 
     <!--  Fragment of Sidebar Chat List  -->
+    <th:block th:fragment="spaces(spaces, currentChatId)">
+        <div class="spaces-container">
+            <div class="spaces-scroll" th:if="${spaces != null && !spaces.isEmpty()}">
+                <div class="space-item" th:each="space : ${spaces}">
+                    <div class="space-header" th:attr="data-space-id=${space.id}">
+                        <button class="space-toggle" aria-label="Toggle space">
+                            <span class="toggle-icon">▸</span>
+                        </button>
+                        <span class="space-title" th:text="${space.title}">Space title</span>
+                        <div class="context-wrapper">
+                            <button class="context-trigger" th:data-target="'spaceMenu-' + ${space.id}">⋯</button>
+                            <th:block th:replace="~{fragment/context_menu_fragment :: spaceContextMenu('spaceMenu-' + ${space.id}, ${space.id}, ${space.title}, '')}"></th:block>
+                        </div>
+                    </div>
+                    <div class="space-chats" th:if="${!space.chats.isEmpty()}">
+                        <ul class="chat-list">
+                            <th:block th:each="chatItem : ${space.chats}">
+                                <li class="chat-item" th:attr="data-chat-id=${chatItem.id}">
+                                    <a th:href="@{/chat/{id}(id=${chatItem.id})}"
+                                       class="chat-link"
+                                       th:classappend="${currentChatId == chatItem.id} ? 'active'">
+                                        <span class="chat-title" th:text="${chatItem.title}">Chat title</span>
+                                    </a>
+                                    <div class="context-wrapper">
+                                        <button class="context-trigger" th:data-target="'chatMenu-space-' + ${chatItem.id}">⋯</button>
+                                        <th:block th:replace="~{fragment/context_menu_fragment :: chatContextMenu('chatMenu-space-' + ${chatItem.id}, ${chatItem.id}, ${chatItem.title}, '')}"></th:block>
+                                    </div>
+                                </li>
+                            </th:block>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="spaces-empty" th:unless="${spaces != null && !spaces.isEmpty()}">
+                <p th:text="#{space.empty}">No spaces yet</p>
+            </div>
+        </div>
+    </th:block>
+
+    <!--  Fragment of Sidebar Chat List  -->
     <th:block th:fragment="chatList(chats, currentChatId)">
         <nav class="chat-list-container">
             <ul class="chat-list" th:if="${chats != null && !chats.isEmpty()}">

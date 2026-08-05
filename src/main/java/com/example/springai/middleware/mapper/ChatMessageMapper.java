@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ChatMessageMapper {
+public class ChatMessageMapper extends BaseMapper {
 
     @Nonnull
     public ChatMessageEntity toEntity(@Nonnull final ChatEntity chat,

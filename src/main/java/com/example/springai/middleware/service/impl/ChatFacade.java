@@ -3,7 +3,7 @@ package com.example.springai.middleware.service.impl;
 import com.example.springai.domain.model.ChatEntity;
 import com.example.springai.domain.service.ChatDomainService;
 import com.example.springai.middleware.mapper.ChatMapper;
-import com.example.springai.middleware.model.request.ChatRequest;
+import com.example.springai.middleware.model.request.CreateChatRequest;
 import com.example.springai.middleware.model.response.ChatResponse;
 import com.example.springai.middleware.model.response.ChatShortResponse;
 import com.example.springai.middleware.service.ChatEdgeService;
@@ -32,7 +32,7 @@ public class ChatFacade implements ChatEdgeService {
 
     @Nonnull
     @Override
-    public UUID createNewChat(@Nonnull final ChatRequest chatRequest) {
+    public UUID createNewChat(@Nonnull final CreateChatRequest chatRequest) {
         ChatEntity newChat = chatDomainService.save(chatMapper.toEntity(chatRequest));
         return newChat.getId();
 
@@ -56,6 +56,13 @@ public class ChatFacade implements ChatEdgeService {
     @Override
     public List<ChatShortResponse> getAllUserChats(@Nonnull final UUID userId, final boolean isActive) {
         List<ChatEntity> chats = chatDomainService.getAllUserChats(userId, isActive);
+        return chatMapper.toShortResponse(chats);
+    }
+
+    @Nonnull
+    @Override
+    public List<ChatShortResponse> getAllUserNonSpaceChats(@Nonnull final UUID userId, final boolean isActive) {
+        List<ChatEntity> chats = chatDomainService.getAllUserNonSpaceChats(userId, isActive);
         return chatMapper.toShortResponse(chats);
     }
 

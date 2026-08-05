@@ -15,6 +15,11 @@ spring:
       base-url: ${OLLAMA_URL}
       chat:
         model: ${OLLAMA_CHAT_MODEL}
+    vectorstore:
+      pgvector:
+        schema-name: ${APP_SCHEMA}
+        table-name: vector_store
+        id-type: uuid
 
   datasource:
     url: ${PG_URL}
@@ -38,6 +43,8 @@ spring:
 app:
   ai:
     max-message-history: ${AI_MAX_MESSAGE_HISTORY}
+    document:
+      chunk-size: ${DOCUMENT_CHUNK_SIZE}
   user:
     default:
       id: ${DEFAULT_USER_ID}

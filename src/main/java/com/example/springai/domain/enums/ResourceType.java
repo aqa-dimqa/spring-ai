@@ -10,8 +10,10 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public enum ResourceType {
 
+    SPACE("space"),
     CHAT("chat"),
     CHAT_MESSAGE("message"),
+    DOCUMENT("document"),
 
     USER("user"),
 

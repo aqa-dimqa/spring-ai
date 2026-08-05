@@ -9,17 +9,17 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 import java.util.UUID;
 
-@Service
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/chat")
@@ -70,6 +70,7 @@ public class RestChatController {
     public SseEmitter processMessage(@Valid @PathVariable("chat_id") @NotNull final String chatIdText,
                                      @Valid @RequestBody @NotNull final ChatMessageRequest request
     ) {
+        log.info("Send message: {}", request.content());
         UUID chatId = UUID.fromString(chatIdText);
         return chatEdgeService.processMessageWithStreaming(userContext.getUserId(), chatId, request.content());
     }

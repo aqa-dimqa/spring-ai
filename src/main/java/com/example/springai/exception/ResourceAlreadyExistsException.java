@@ -4,18 +4,21 @@ import com.example.springai.domain.enums.ResourceType;
 import jakarta.annotation.Nonnull;
 import lombok.Getter;
 
-@Getter
-public class ResourceAlreadyExistsException extends RuntimeException {
+import java.util.Map;
 
-    private final ResourceType resourceType;
-    private final String query;
+@Getter
+public class ResourceAlreadyExistsException extends ResourceConditionException {
+
+    private static final String BASE_MESSAGE = "Resource already exists";
+
+    public ResourceAlreadyExistsException(ResourceType resourceType, String query) {
+        super(BASE_MESSAGE, resourceType, query);
+    }
 
     public ResourceAlreadyExistsException(@Nonnull final ResourceType resourceType,
-                                          @Nonnull final String query
+                                          @Nonnull final Map<String, Object> queries
     ) {
-        super("Resource already exists. Resource type = [%s], query: [%s]".formatted(resourceType, query));
-        this.resourceType = resourceType;
-        this.query = query;
+        super(BASE_MESSAGE, resourceType, queries);
     }
 
 }

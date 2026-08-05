@@ -19,16 +19,12 @@ import java.util.UUID;
 @Entity
 @Table(
         schema = Constants.Db.APP_SCHEMA,
-        name = Constants.Db.CHAT_TABLE
+        name = Constants.Db.SPACE_TABLE
 )
-public class ChatEntity extends BaseEntity<ChatEntity> {
+public class SpaceEntity extends BaseEntity<SpaceEntity> {
 
     @Column(name = "user_id", nullable = false)
     private UUID userId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "space_id", referencedColumnName = "id")
-    private SpaceEntity space;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -36,10 +32,7 @@ public class ChatEntity extends BaseEntity<ChatEntity> {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
-    @Column(name = "max_messages", nullable = false)
-    private int maxMessages;
-
-    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ChatMessageEntity> messages;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "space", cascade = CascadeType.ALL)
+    private List<ChatEntity> chats;
 
 }

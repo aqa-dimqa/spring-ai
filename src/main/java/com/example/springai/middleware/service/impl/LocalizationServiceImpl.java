@@ -11,7 +11,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -67,6 +66,7 @@ public class LocalizationServiceImpl implements LocalizationService {
     @Nonnull
     private String getTranslate(LocalizationParams localizationParams) {
         Locale actualLocale = localizationParams.locale() != null ? localizationParams.locale() : this.locale;
+        localizationParams.locale(actualLocale);
         return Optional.ofNullable(
                         messageSource.getMessage(
                                 localizationParams.key(),
@@ -74,31 +74,19 @@ public class LocalizationServiceImpl implements LocalizationService {
                                 localizationParams.defaultValue(),
                                 localizationParams.locale())
                 )
-                .orElseThrow(() ->
-                        new LocalizationException("Failed to get localized message for key: %s.%s%s%s"
-                                .formatted(
-                                        localizationParams.key(),
-                                        localizationParams.params().length > 0
-                                                ? " . Provided params: " +
-                                                Arrays.stream(localizationParams.params())
-                                                        .map(Object::toString)
-                                                        .toList()
-                                                : "",
-                                        !localizationParams.defaultValue().isEmpty()
-                                                ? " . Default value: " + localizationParams.defaultValue()
-                                                : "",
-                                        ". Locale: " + actualLocale.getLanguage()
-                                )));
+                .orElseThrow(() -> new LocalizationException(localizationParams));
     }
 
     @Builder
-    private record LocalizationParams(
+    public record LocalizationParams(
             @Nonnull String key,
             @Nullable Object[] params,
             @Nullable String defaultValue,
             @Nullable Locale locale
     ) implements Serializable {
-
+        public LocalizationParams locale(Locale locale) {
+            return new LocalizationParams(this.key, this.params, this.defaultValue, locale);
+        }
     }
 
 }

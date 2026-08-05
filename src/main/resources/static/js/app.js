@@ -1,8 +1,9 @@
 import { $ } from './utils.js';
 import { initSidebar } from './sidebar.js';
+import { initSpaces } from "./spaces.js";
 import { initContextMenus } from './contextMenu.js';
 import { initModals } from './modal.js';
-import { initEditChatTitle } from './chatTitle.js';
+import { initEditChatTitle } from './editChatTitle.js';
 import { initMessages } from './messages.js';
 import { initStreaming } from './streaming.js';
 import { initArchive } from './archive.js';
@@ -22,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay,
         onOverlayClick
     });
+
+    initSpaces();
 
     initContextMenus();
 

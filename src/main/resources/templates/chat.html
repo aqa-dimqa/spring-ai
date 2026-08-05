@@ -18,16 +18,20 @@
         <th:block th:replace="~{fragment/sidebar_fragment::header()}">
         </th:block>
 
+        <!-- Spaces -->
+        <th:block th:replace="~{fragment/sidebar_fragment::spaces(${spaces}, ${chat?.id})}">
+        </th:block>
+
         <!-- New Chat Button -->
         <button class="btn-new-chat" id="newChatBtn" th:text="#{chat.button.new}">New chat</button>
 
+        <!-- Chats -->
         <th:block th:replace="~{fragment/sidebar_fragment::chatList(${chats}, ${chat?.id})}">
         </th:block>
 
         <!-- Sidebar Footer / User Block -->
         <th:block th:replace="~{fragment/sidebar_fragment::footer()}">
         </th:block>
-
 
     </aside>
 

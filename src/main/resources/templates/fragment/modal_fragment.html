@@ -7,14 +7,12 @@
         <div id="newChatModal" class="modal">
             <div class="modal-dialog">
                 <div class="modal-header">
-                    <h3 th:text="#{chat.modal.new.new}">Create new chat</h3>
+                    <h3 th:text="#{chat.modal.new.title}">Create new chat</h3>
                     <button class="modal-close" data-modal="newChatModal">✕</button>
                 </div>
                 <form th:action="@{/chat/new}" method="post" class="modal-form">
                     <label for="newChatTitle" th:text="#{chat.modal.new.label}">Chat title</label>
-                    <input type="text" id="newChatTitle" name="title"
-                           th:placeholder="#{chat.placeholder.new}"
-                           placeholder="My chat" required>
+                    <input type="text" id="newChatTitle" name="title" required>
                     <div class="modal-actions">
                         <button type="button" class="btn-cancel modal-close-btn" th:text="#{button.cancel}">Cancel</button>
                         <button type="submit" class="btn-primary" th:text="#{button.save}">Save</button>
@@ -29,13 +27,31 @@
         <div id="editChatModal" class="modal">
             <div class="modal-dialog">
                 <div class="modal-header">
-                    <h3 th:text="#{chat.modal.new.edit}">Edit chat</h3>
+                    <h3 th:text="#{chat.modal.edit.title}">Edit chat</h3>
                     <button class="modal-close" data-modal="editChatModal">✕</button>
                 </div>
                 <form id="editChatForm" class="modal-form">
-                    <label for="editChatTitle" th:text="#{chat.modal.new.label}">Chat title</label>
-                    <input type="text" id="editChatTitle" name="title"
-                           th:placeholder="#{chat.placeholder.new}" required>
+                    <label for="editChatTitle" th:text="#{chat.modal.edit.label}">Chat title</label>
+                    <input type="text" id="editChatTitle" name="title" required>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-cancel modal-close-btn" th:text="#{button.cancel}">Cancel</button>
+                        <button type="submit" class="btn-primary" th:text="#{button.save}">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </th:block>
+
+    <th:block th:fragment="editSpaceModal()">
+        <div id="editSpaceModal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-header">
+                    <h3 th:text="#{space.modal.edit.title}">Edit space</h3>
+                    <button class="modal-close" data-modal="editSpaceModal">✕</button>
+                </div>
+                <form id="editSpaceForm" class="modal-form">
+                    <label for="editSpaceTitle" th:text="#{space.modal.edit.label}">Space title</label>
+                    <input type="text" id="editSpaceTitle" name="title" required>
                     <div class="modal-actions">
                         <button type="button" class="btn-cancel modal-close-btn" th:text="#{button.cancel}">Cancel</button>
                         <button type="submit" class="btn-primary" th:text="#{button.save}">Save</button>
